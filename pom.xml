@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.example.ods</groupId>
+  <artifactId>ods-flink-dependencies</artifactId>
+  <version>0.1.0</version>
+
+  <properties>
+    <maven.compiler.release>17</maven.compiler.release>
+    <flink.version>2.3.0</flink.version>
+    <iceberg.version>1.11.0</iceberg.version>
+    <glue.schema.registry.version>2.0.0</glue.schema.registry.version>
+    <!-- Verify this against your organization-approved MSF connector matrix. -->
+    <flink.kafka.connector.version>5.0.0-2.2</flink.kafka.connector.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <!-- Compile against MSF's Flink runtime; never shade Flink itself. -->
+    <dependency>
+      <groupId>org.apache.flink</groupId><artifactId>flink-core</artifactId>
+      <version>${flink.version}</version><scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.flink</groupId><artifactId>flink-table-api-java-bridge</artifactId>
+      <version>${flink.version}</version><scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.flink</groupId><artifactId>flink-connector-kafka</artifactId>
+      <version>${flink.kafka.connector.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>software.amazon.glue</groupId><artifactId>schema-registry-serde</artifactId>
+      <version>${glue.schema.registry.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.iceberg</groupId><artifactId>iceberg-flink-runtime-2.3</artifactId>
+      <version>${iceberg.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.iceberg</groupId><artifactId>iceberg-aws-bundle</artifactId>
+      <version>${iceberg.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>ods-flink-dependencies</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId><artifactId>maven-shade-plugin</artifactId><version>3.6.0</version>
+        <executions><execution><phase>package</phase><goals><goal>shade</goal></goals>
+          <configuration>
+            <createDependencyReducedPom>false</createDependencyReducedPom>
+            <filters><filter><artifact>*:*</artifact><excludes>
+              <exclude>META-INF/*.SF</exclude><exclude>META-INF/*.DSA</exclude><exclude>META-INF/*.RSA</exclude>
+            </excludes></filter></filters>
+          </configuration>
+        </execution></executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+

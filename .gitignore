@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+.pytest_cache/
+cdk.out/
+target/
+*.pyc
+.env
+application_properties.json

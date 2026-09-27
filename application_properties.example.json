@@ -1,0 +1,14 @@
+[
+  {
+    "PropertyGroupId": "ods.cdc",
+    "PropertyMap": {
+      "environment": "local",
+      "bootstrap_servers": "localhost:9092",
+      "topic_pattern": "local.cdc.*",
+      "dlq_topic": "local.cdc.dlq",
+      "glue_database": "ods",
+      "iceberg_warehouse": "file:///tmp/ods-iceberg",
+      "checkpoint_interval_ms": "60000"
+    }
+  }
+]
